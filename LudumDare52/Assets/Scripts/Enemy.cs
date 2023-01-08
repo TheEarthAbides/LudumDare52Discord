@@ -12,11 +12,18 @@ public class Enemy : MonoBehaviour
     public float aliveTimer;
     bool dead;
     private Transform arrowTrans;
+    private SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
 
     private void Awake()
     {
         arrowTrans = transform.GetChild(0);
+        spriteRenderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
+    }
+
+    private void OnDisable()
+    {
+        spriteRenderer.color = Color.white;
     }
 
     public void Update()
@@ -34,6 +41,7 @@ public class Enemy : MonoBehaviour
         transform.localScale = Vector3.zero;
         transform.position = _pos;
         arrowTrans.DORotate(new Vector3(0, 0, 720), 1.1f,RotateMode.FastBeyond360).SetEase(Ease.OutQuad);
+        StartCoroutine(PerfectIndicator());
 
         transform.DOScale(1, 1.2f).SetEase(Ease.OutQuad);
 
@@ -53,5 +61,13 @@ public class Enemy : MonoBehaviour
         aliveTimer = 0;
     }
 
+    private IEnumerator PerfectIndicator()
+    {
+        // PerfectIndicator signaling needs more juice
+        yield return new WaitForSeconds(0.9f);
+        spriteRenderer.color = Color.green;
+        yield return new WaitForSeconds(.5f);
+        spriteRenderer.color = GnomeGame.Colors.gnomeFadeOutPurple;
+    }
     //
 }
