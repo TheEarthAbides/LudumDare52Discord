@@ -28,9 +28,9 @@ public class Enemy : MonoBehaviour
         transform.position = _pos;
 
        
-        transform.DOScale(1, 1.4f).SetEase(Ease.OutQuad).OnComplete(()=>{ /*GetComponent<MeshRenderer>().material.color = Color.green;*/ });
+        transform.DOScale(1, 1.2f).SetEase(Ease.OutQuad).OnComplete(()=>{ /*GetComponent<MeshRenderer>().material.color = Color.green;*/ });
 
-        transform.DOScale(0, 0.3f).SetEase(Ease.InQuad).SetDelay(1.6f).OnComplete(()=> {  SpawnManager.instance.ActivateSpawn(transform.position); if(gameObject.activeInHierarchy) GameManager.instance.UpdateScore(0, transform.position); gameObject.SetActive(false); aliveTimer = 0;
+        transform.DOScale(0, 0.3f).SetEase(Ease.InQuad).SetDelay(1.4f).OnComplete(()=> {  SpawnManager.instance.ActivateSpawn(transform.position); if(gameObject.activeInHierarchy) GameManager.instance.UpdateScore(0, transform.position); gameObject.SetActive(false); aliveTimer = 0;
         });
     }
 

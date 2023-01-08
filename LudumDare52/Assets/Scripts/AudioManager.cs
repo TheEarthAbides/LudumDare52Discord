@@ -9,6 +9,9 @@ public class AudioManager : MonoBehaviour
     private AudioSource source;
     public AudioSource musicSource;
     public AudioClip[] levels;
+    public AudioClip menuMusic;
+    public AudioClip[] MagicSounds;
+    public AudioClip[] ComboSounds;
 
     public float updateStep = 0.1f;
     public int sampleDataLength = 1024;
@@ -20,15 +23,19 @@ public class AudioManager : MonoBehaviour
     bool trackData;
     int lastPrintedIndex = -1;
     private float lastLoud = 0;
+
     private void Awake()
     {
         instance = this;
         source = GetComponent<AudioSource>();
+
+        musicSource.clip = menuMusic;
+        musicSource.Play();
     }
 
     public void PlayOneShot(AudioClip _clip)
     {
-        //source.PlayOneShot(_clip);
+        source.PlayOneShot(_clip);
         source.pitch = 1;
     }
 
@@ -42,12 +49,18 @@ public class AudioManager : MonoBehaviour
 
     public void StartMusic(int _level)
     {
-        musicSource.volume = 1;
-        musicSource.clip = levels[_level];
-        musicSource.time = 6.3f;
-        trackData = true;
-        clipSampleData = new float[sampleDataLength];
-        musicSource.Play();
+        musicSource.DOFade(0, 1.0f).OnComplete(()=>
+        {
+            //musicSource.volume = 0.3f;
+            musicSource.DOFade(0.3f, 0.5f);
+            musicSource.clip = levels[_level];
+            musicSource.time = 0f;
+            trackData = true;
+            clipSampleData = new float[sampleDataLength];
+            musicSource.Play();
+        }
+        );
+     
         //musicSource.DOFade(1, 1);
 
     }

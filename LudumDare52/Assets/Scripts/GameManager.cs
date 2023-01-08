@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public AudioClip[] SuccessSound;
     public AudioClip[] MissSound;
-
+    public GnomeFeedback gnomeFeedback;
 
     private void Awake()
     {
@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
             int clip = Random.Range(0, MissSound.Length);
 
             AudioManager.instance.PlayOneShot(MissSound[clip]);
+            gnomeFeedback.ShowNegative();
+
 
 
         }
@@ -84,6 +86,12 @@ public class GameManager : MonoBehaviour
             //AudioManager.instance.PlayOneShot(SuccessSound[clip]);
         }
 
+        if(currentStreak > 0 && currentStreak% 10 == 0)
+        {
+            AudioManager.instance.PlayOneShot(AudioManager.instance.ComboSounds[Random.Range(0, AudioManager.instance.ComboSounds.Length)]);
+            gnomeFeedback.ShowPositive();
+        }
+
         uiFeedbackIndex++;
     }
 
@@ -117,6 +125,10 @@ public class GameManager : MonoBehaviour
     public void NextLevel()
     {
         currentLevel++;
+        currentStreak = 0;
+        UIManager.instance.UpdateCombo(0);
+
+        SpawnManager.instance.locationIndex = 0;
         SpawnManager.instance.StartLevel(currentLevel);
         UIManager.instance.LevelCompleteFade();
         AudioManager.instance.StartMusic(currentLevel);
@@ -125,6 +137,11 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        SpawnManager.instance.locationIndex = 0;
+
+        currentStreak = 0;
+        UIManager.instance.UpdateCombo(0);
+
         UIManager.instance.GameOverFade();
         currentLevel = 0;
         SpawnManager.instance.StartLevel(currentLevel);

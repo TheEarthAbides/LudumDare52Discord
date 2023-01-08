@@ -43,6 +43,7 @@ public class SpawnManager : MonoBehaviour
 
     public GamePlayFrame [] currentLevel;
 
+    public int locationIndex = 0;
 
     private void Awake()
     {
@@ -83,32 +84,44 @@ public class SpawnManager : MonoBehaviour
                 {
                     location = UnityEngine.Random.Range(0, spawnLocs.Count);
 
-                    CreateEnemy("rat", spawnLocs[location]);
-                    spawnLocs.RemoveAt(location);
+                    CreateEnemy("rat", spawnLocs[locationIndex]);
+                    //spawnLocs.RemoveAt(location);
+                    locationIndex++;
                 }
 
                 if (currentLevel[currentFrameIndex].Pig)
                 {
                     location = UnityEngine.Random.Range(0, spawnLocs.Count);
 
-                    CreateEnemy("pig", spawnLocs[location]);
-                    spawnLocs.RemoveAt(location);
+                    CreateEnemy("pig", spawnLocs[locationIndex]);
+                    //spawnLocs.RemoveAt(location);
+                    locationIndex++;
+
                 }
 
                 if (currentLevel[currentFrameIndex].Worm)
                 {
                     location = UnityEngine.Random.Range(0, spawnLocs.Count);
 
-                    CreateEnemy("worm", spawnLocs[location]);
-                    spawnLocs.RemoveAt(location);
+                    CreateEnemy("worm", spawnLocs[locationIndex]);
+                    //spawnLocs.RemoveAt(location);
+                    locationIndex++;
+
                 }
 
                 if (currentLevel[currentFrameIndex].Raccoon)
                 {
                     location = UnityEngine.Random.Range(0, spawnLocs.Count);
 
-                    CreateEnemy("raccoon", spawnLocs[location]);
-                    spawnLocs.RemoveAt(location);
+                    CreateEnemy("raccoon", spawnLocs[locationIndex]);
+                    locationIndex++;
+
+                    //spawnLocs.RemoveAt(location);
+                }
+
+                if (locationIndex >= spawnLocs.Count)
+                {
+                    locationIndex = 0;
                 }
 
                 currentFrameIndex++;
@@ -230,6 +243,8 @@ public class SpawnManager : MonoBehaviour
                 float size = rats[oldestIndex].transform.localScale.x;
 
                 GameManager.instance.UpdateScore(size, rats[oldestIndex].transform.position);
+
+                PlayerController.instance.LaunchMissile(rats[oldestIndex].transform.position);
             }
         }
         else if (_animal == "pig")
@@ -249,6 +264,8 @@ public class SpawnManager : MonoBehaviour
                 float size = pigs[oldestIndex].transform.localScale.x;
 
                 GameManager.instance.UpdateScore(size, pigs[oldestIndex].transform.position);
+                PlayerController.instance.LaunchMissile(pigs[oldestIndex].transform.position);
+
             }
         }
         else if (_animal == "worm")
@@ -268,6 +285,8 @@ public class SpawnManager : MonoBehaviour
                 float size = worms[oldestIndex].transform.localScale.x;
 
                 GameManager.instance.UpdateScore(size, worms[oldestIndex].transform.position);
+                PlayerController.instance.LaunchMissile(worms[oldestIndex].transform.position);
+
             }
         }
         else if (_animal == "raccoon")
@@ -287,6 +306,8 @@ public class SpawnManager : MonoBehaviour
                 float size = raccoons[oldestIndex].transform.localScale.x;
 
                 GameManager.instance.UpdateScore(size, raccoons[oldestIndex].transform.position);
+                PlayerController.instance.LaunchMissile(raccoons[oldestIndex].transform.position);
+
             }
         }
 
@@ -299,7 +320,7 @@ public class SpawnManager : MonoBehaviour
 
     public void ActivateSpawn(Vector3 _pos)
     {
-        if(!spawnLocs.Contains(_pos))
-            spawnLocs.Add(_pos);
+        //if(!spawnLocs.Contains(_pos))
+            //spawnLocs.Add(_pos);
     }
 }

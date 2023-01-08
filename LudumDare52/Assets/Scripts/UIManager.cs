@@ -46,7 +46,6 @@ public class UIManager : MonoBehaviour
     public void GameOverFade()
     {
         GameOverGroup.DOFade(0, 1).OnComplete(() => { GameOverGroup.gameObject.SetActive(false); });
-
     }
 
     public void WonGame()
@@ -59,7 +58,6 @@ public class UIManager : MonoBehaviour
     public void WonGameFade()
     {
         WonGameGroup.DOFade(0, 1).OnComplete(() => { WonGameGroup.gameObject.SetActive(false); });
-
     }
 
     public void UpdatePoints(int _points)
@@ -70,5 +68,15 @@ public class UIManager : MonoBehaviour
     public void UpdateCombo(int _combo)
     {
         combo.text = "Combo: " + _combo.ToString();
+        if(_combo == 0)
+        {
+            combo.color = Color.white;
+        }
+        else
+        {
+            combo.color = Color.green;
+            combo.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.05f);
+
+        }
     }
 }
