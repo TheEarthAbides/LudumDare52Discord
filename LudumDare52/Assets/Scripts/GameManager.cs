@@ -16,10 +16,16 @@ public class GameManager : MonoBehaviour
     public int GoodPoints;
     public int BadPoints;
     public int MissPoints;
+    public float PerfectFever;
+    public float GoodFever;
+    public float BadFever;
+    public float MissFever;
 
     public AudioClip[] SuccessSound;
     public AudioClip[] MissSound;
     public GnomeFeedback gnomeFeedback;
+
+    public float feverMeter;
 
     private void Awake()
     {
@@ -46,6 +52,7 @@ public class GameManager : MonoBehaviour
 
             AudioManager.instance.PlayOneShot(MissSound[clip]);
             gnomeFeedback.ShowNegative();
+            AdjustFever(MissFever);
 
 
 
@@ -59,6 +66,7 @@ public class GameManager : MonoBehaviour
 
             currentStreak = 0;
             UIManager.instance.UpdateCombo(currentStreak);
+            AdjustFever(BadFever);
 
         }
         else if (size < 0.9f)
@@ -70,6 +78,7 @@ public class GameManager : MonoBehaviour
 
             currentStreak = 0;
             UIManager.instance.UpdateCombo(currentStreak);
+            AdjustFever(GoodFever);
 
         }
         else
@@ -83,10 +92,12 @@ public class GameManager : MonoBehaviour
             UIManager.instance.UpdateCombo(currentStreak);
 
             int clip = Random.Range(0, SuccessSound.Length);
+            AdjustFever(PerfectFever);
+
             //AudioManager.instance.PlayOneShot(SuccessSound[clip]);
         }
 
-        if(currentStreak > 0 && currentStreak% 10 == 0)
+        if (currentStreak > 0 && currentStreak% 10 == 0)
         {
             AudioManager.instance.PlayOneShot(AudioManager.instance.ComboSounds[Random.Range(0, AudioManager.instance.ComboSounds.Length)]);
             gnomeFeedback.ShowPositive();
@@ -95,8 +106,28 @@ public class GameManager : MonoBehaviour
         uiFeedbackIndex++;
     }
 
+    public void AdjustFever(float _fever)
+    {
+        feverMeter += _fever;
+        feverMeter = Mathf.Clamp(feverMeter, 0, 1);
+        UIManager.instance.UpdateFeverMeter(feverMeter);
+
+        if(feverMeter <= 0)
+        {
+            GameOver();
+        }
+    }
+
+    public void SetFever(float _fever)
+    {
+        feverMeter = _fever;
+        UIManager.instance.UpdateFeverMeter(feverMeter);
+
+    }
+
     public void StartGame()
     {
+        SetFever(0.5f);
         currentLevel = 0;
         UIManager.instance.FadeTitle();
         SpawnManager.instance.StartLevel(currentLevel);
@@ -124,6 +155,8 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
+        SetFever(0.5f);
+
         currentLevel++;
         currentStreak = 0;
         UIManager.instance.UpdateCombo(0);
@@ -137,6 +170,8 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        SetFever(0.5f);
+
         SpawnManager.instance.locationIndex = 0;
 
         currentStreak = 0;
@@ -161,6 +196,8 @@ public class GameManager : MonoBehaviour
 
     public void WonGameRestart()
     {
+        SetFever(0.5f);
+
         UIManager.instance.WonGameFade();
         currentLevel = 0;
         SpawnManager.instance.StartLevel(currentLevel);

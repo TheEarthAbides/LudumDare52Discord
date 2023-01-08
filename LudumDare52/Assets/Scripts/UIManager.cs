@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public CanvasGroup WonGameGroup;
     public TMPro.TextMeshProUGUI points;
     public TMPro.TextMeshProUGUI combo;
+    public Image FeverMeterFill;
 
     private void Awake()
     {
@@ -78,5 +79,10 @@ public class UIManager : MonoBehaviour
             combo.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.05f);
 
         }
+    }
+
+    public void UpdateFeverMeter(float _fever)
+    {
+        FeverMeterFill.DOFillAmount(_fever, 0.1f);
     }
 }

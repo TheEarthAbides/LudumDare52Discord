@@ -318,9 +318,4 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    public void ActivateSpawn(Vector3 _pos)
-    {
-        //if(!spawnLocs.Contains(_pos))
-            //spawnLocs.Add(_pos);
-    }
 }
