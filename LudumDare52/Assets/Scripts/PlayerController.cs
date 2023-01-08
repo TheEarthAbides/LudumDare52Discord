@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     //good
     //perfect
     public float TimeWindow;
-    public AudioClip Attack1;
-    public AudioClip Attack2;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,32 +18,22 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))//special monsters
+        if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
-
+            ShootAnimal("rat");
         }
-        else if(Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))//special monsters
-        {
-
-        }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            ShootAnimal("cat");
-            SoundEffectManager.instance.PlayOneShotRandomPitch(Attack1);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             ShootAnimal("pig");
-            SoundEffectManager.instance.PlayOneShotRandomPitch(Attack2);
 
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-
+            ShootAnimal("raccoon");
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-
+            ShootAnimal("worm");
         }
 
     }
