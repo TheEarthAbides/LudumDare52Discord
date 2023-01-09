@@ -6123,6 +6123,7 @@ MonoBehaviour:
   Level3: []
   currentLevel: []
   locationIndex: 0
+  ActiveEnemies: []
 --- !u!4 &1193261524
 Transform:
   m_ObjectHideFlags: 0
@@ -12236,7 +12237,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
-  m_FillAmount: 0.5
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -12902,7 +12903,7 @@ MonoBehaviour:
   levels:
   - {fileID: 8300000, guid: 5bdf58d93054c6b45aa019a0ce2eb3ff, type: 3}
   - {fileID: 8300000, guid: a0bf3888c911f2f4bb1ab3829c030d8f, type: 3}
-  - {fileID: 8300000, guid: ab105edfe26df5846b21ab294282c48f, type: 3}
+  - {fileID: 8300000, guid: 885702d861374174786ae2bf0e269ff2, type: 3}
   menuMusic: {fileID: 8300000, guid: d0304374ab0bb2b4e936e7b60e71d716, type: 3}
   MagicSounds:
   - {fileID: 8300000, guid: aa9a73d5f8cc0f7488f988c37c60b4ae, type: 3}
@@ -12913,6 +12914,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4fea8ffb03fd0604db2ea002a23f5852, type: 3}
   - {fileID: 8300000, guid: 950d225d963b69b409d4f527e90a4fc7, type: 3}
   - {fileID: 8300000, guid: 092a9a72bb7fe5a41895c32ad6c8026d, type: 3}
+  GameOverSounds:
+  - {fileID: 8300000, guid: 2dbba034ad786a54089a54d22808d104, type: 3}
+  - {fileID: 8300000, guid: 499ea138798a3cc42a46e5ad9d216b1e, type: 3}
   updateStep: 0.1
   sampleDataLength: 1024
 --- !u!4 &1714855517
@@ -14439,13 +14443,13 @@ MonoBehaviour:
   PerfectFever: 0.1
   GoodFever: 0.05
   BadFever: -0.05
-  MissFever: -0.2
+  MissFever: -0.1
   SuccessSound:
   - {fileID: 8300000, guid: e7255225fab2ee34c9b8f6b346a7f939, type: 3}
   - {fileID: 8300000, guid: 93da655a959832f40b499a0315030304, type: 3}
   - {fileID: 8300000, guid: ffb7dbb91b62dc04480d7bf1b9af07c3, type: 3}
   MissSound:
-  - {fileID: 8300000, guid: 90afe9da827856545af5ea6f49d78302, type: 3}
+  - {fileID: 8300000, guid: 0dbf74293fcf03c42a870e9369454894, type: 3}
   gnomeFeedback: {fileID: 5358564552979770476}
   feverMeter: 0
 --- !u!1 &2103064063

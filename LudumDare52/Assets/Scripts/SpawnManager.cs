@@ -45,6 +45,9 @@ public class SpawnManager : MonoBehaviour
 
     public int locationIndex = 0;
 
+    public List<Enemy> ActiveEnemies;
+
+
     private void Awake()
     {
         bassKeyFrames = new List<int>();
@@ -54,6 +57,41 @@ public class SpawnManager : MonoBehaviour
         {
             spawnLocs.Add(LocationParent.GetChild(i).position);
         }
+        GenerateLevel();
+
+        
+    }
+
+    public void GenerateLevel()
+    {
+        //Level1 = new GamePlayFrame[300];
+        List <GamePlayFrame> frames = new List<GamePlayFrame>();
+        for(int i = 0; i < 300; i++)
+        {
+            GamePlayFrame frame = new GamePlayFrame();
+            int selection = UnityEngine.Random.Range(0, 10);
+
+            if(selection< 2)
+            {
+                frame.Rat = true;
+            }
+            else if(selection< 4)
+            {
+                frame.Pig = true;
+            }
+            else if (selection < 6)
+            {
+                frame.Raccoon = true;
+            }
+            else if (selection < 8)
+            {
+                frame.Worm = true;
+            }
+
+            frames.Add(frame);
+        }
+
+        Level1 = frames.ToArray();
     }
 
     // Update is called once per frame
@@ -165,6 +203,8 @@ public class SpawnManager : MonoBehaviour
 
         currentFrameTime = -3;
 
+        ActiveEnemies = new List<Enemy>();
+
     }
 
     public void StopLevel()
@@ -183,6 +223,8 @@ public class SpawnManager : MonoBehaviour
             }
 
             rats[ratIndex].Spawn(_pos);
+            ActiveEnemies.Add(rats[ratIndex]);
+
             ratIndex++;
         }
         else if (_type == "pig")
@@ -194,7 +236,10 @@ public class SpawnManager : MonoBehaviour
             }
 
             pigs[pigIndex].Spawn(_pos);
+            ActiveEnemies.Add(pigs[pigIndex]);
+
             pigIndex++;
+
         }
         else if (_type == "worm")
         {
@@ -205,7 +250,10 @@ public class SpawnManager : MonoBehaviour
             }
 
             worms[wormIndex].Spawn(_pos);
+            ActiveEnemies.Add(worms[wormIndex]);
+
             wormIndex++;
+
         }
         else if (_type == "raccoon")
         {
@@ -216,106 +264,35 @@ public class SpawnManager : MonoBehaviour
             }
 
             raccoons[raccoonIndex].Spawn(_pos);
+            ActiveEnemies.Add(raccoons[raccoonIndex]);
+
             raccoonIndex++;
+
         }
+    }
+
+    public void RemoveEnemy(Enemy _enemy)
+    {
+        ActiveEnemies.Remove(_enemy);
     }
 
     public void CheckForKill(string _animal)
     {
-        int oldestIndex = -1;
-        float oldestTime = 0;
+        if (ActiveEnemies.Count <= 0) return;
 
-        if (_animal == "rat")
+        if(ActiveEnemies[0].type.ToString() == _animal)
         {
-            for (int i = 0; i < rats.Length; i++)
-            {
-                if (rats[i].aliveTimer > 0 && rats[i].aliveTimer > oldestTime)
-                {
-                    oldestTime = rats[i].aliveTimer;
-                    oldestIndex = i;
-                }
-            }
+            float size = ActiveEnemies[0].transform.localScale.x;
 
-            if(oldestIndex != -1)
-            {
-                rats[oldestIndex].Die();
+            GameManager.instance.UpdateScore(size, ActiveEnemies[0].transform.position);
 
-                float size = rats[oldestIndex].transform.localScale.x;
-
-                GameManager.instance.UpdateScore(size, rats[oldestIndex].transform.position);
-
-                PlayerController.instance.LaunchMissile(rats[oldestIndex].transform.position);
-            }
+            PlayerController.instance.LaunchMissile(ActiveEnemies[0].transform.position);
+            ActiveEnemies[0].Die();
         }
-        else if (_animal == "pig")
-        {
-            for (int i = 0; i < pigs.Length; i++)
-            {
-                if (pigs[i].aliveTimer > 0 && pigs[i].aliveTimer > oldestTime)
-                {
-                    oldestTime = pigs[i].aliveTimer;
-                    oldestIndex = i;
-                }
-            }
-
-            if (oldestIndex != -1)
-            {
-                pigs[oldestIndex].Die();
-                float size = pigs[oldestIndex].transform.localScale.x;
-
-                GameManager.instance.UpdateScore(size, pigs[oldestIndex].transform.position);
-                PlayerController.instance.LaunchMissile(pigs[oldestIndex].transform.position);
-
-            }
-        }
-        else if (_animal == "worm")
-        {
-            for (int i = 0; i < worms.Length; i++)
-            {
-                if (worms[i].aliveTimer > 0 && worms[i].aliveTimer > oldestTime)
-                {
-                    oldestTime = worms[i].aliveTimer;
-                    oldestIndex = i;
-                }
-            }
-
-            if (oldestIndex != -1)
-            {
-                worms[oldestIndex].Die();
-                float size = worms[oldestIndex].transform.localScale.x;
-
-                GameManager.instance.UpdateScore(size, worms[oldestIndex].transform.position);
-                PlayerController.instance.LaunchMissile(worms[oldestIndex].transform.position);
-
-            }
-        }
-        else if (_animal == "raccoon")
-        {
-            for (int i = 0; i < raccoons.Length; i++)
-            {
-                if (raccoons[i].aliveTimer > 0 && raccoons[i].aliveTimer > oldestTime)
-                {
-                    oldestTime = raccoons[i].aliveTimer;
-                    oldestIndex = i;
-                }
-            }
-
-            if (oldestIndex != -1)
-            {
-                raccoons[oldestIndex].Die();
-                float size = raccoons[oldestIndex].transform.localScale.x;
-
-                GameManager.instance.UpdateScore(size, raccoons[oldestIndex].transform.position);
-                PlayerController.instance.LaunchMissile(raccoons[oldestIndex].transform.position);
-
-            }
-        }
-
-        if (oldestIndex == -1)//miss
+        else
         {
             GameManager.instance.UpdateScore(0, new Vector3(5, -3, 0));
         }
-
     }
 
 }

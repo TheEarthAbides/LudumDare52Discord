@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             ShootAnimal("rat");
@@ -50,7 +51,6 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlayOneShot(AudioManager.instance.MagicSounds[3]);
 
         }
-
     }
 
     public void ShootAnimal(string _animal)

@@ -5,7 +5,15 @@ using DG.Tweening;
 
 public class Enemy : MonoBehaviour
 {
+    public enum EnemyType
+    {
+        rat,
+        pig,
+        worm,
+        raccoon
+    }
 
+    public EnemyType type;
     public AudioClip spawnSound;
     public AudioClip deathSound;
 
@@ -47,7 +55,8 @@ public class Enemy : MonoBehaviour
 
         transform.DOScale(0, 0.3f).SetEase(Ease.InQuad).SetDelay(1.4f).OnComplete(()=> 
         {
-            if(!dead) GameManager.instance.UpdateScore(0, transform.position); gameObject.SetActive(false); aliveTimer = 0;
+            if(!dead) GameManager.instance.UpdateScore(0, transform.position); SpawnManager.instance.RemoveEnemy(this);
+            gameObject.SetActive(false); aliveTimer = 0;
         });
     }
 
@@ -59,15 +68,19 @@ public class Enemy : MonoBehaviour
         transform.DOShakePosition(0.1f, 0.2f);
         transform.DOShakeRotation(0.1f, 1f).OnComplete(()=> { gameObject.SetActive(false); }) ;
         aliveTimer = 0;
+        SpawnManager.instance.RemoveEnemy(this);
     }
 
     private IEnumerator PerfectIndicator()
     {
         // PerfectIndicator signaling needs more juice
         yield return new WaitForSeconds(0.9f);
-        spriteRenderer.color = Color.green;
+        //spriteRenderer.color = Color.green;
+        arrowTrans.GetComponent<SpriteRenderer>().color = Color.green;
         yield return new WaitForSeconds(.5f);
-        spriteRenderer.color = GnomeGame.Colors.gnomeFadeOutPurple;
+        //spriteRenderer.color = GnomeGame.Colors.gnomeFadeOutPurple;
+        arrowTrans.GetComponent<SpriteRenderer>().color = Color.white;
+
     }
     //
 }

@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip menuMusic;
     public AudioClip[] MagicSounds;
     public AudioClip[] ComboSounds;
+    public AudioClip[] GameOverSounds;
 
     public float updateStep = 0.1f;
     public int sampleDataLength = 1024;
@@ -49,6 +50,7 @@ public class AudioManager : MonoBehaviour
 
     public void StartMusic(int _level)
     {
+        musicSource.pitch = 1;
         musicSource.DOFade(0, 1.0f).OnComplete(()=>
         {
             //musicSource.volume = 0.3f;
@@ -65,49 +67,24 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    public void GameOverMusic()
+    {
+        musicSource.clip = menuMusic;
+        musicSource.pitch = 0.6f;
+        musicSource.DOFade(1, 1).SetDelay(1);
+        musicSource.Play();
+    }
+
+    public void AdjustPitch(float _rate)
+    {
+        float normalized = _rate * 0.4f + 0.6f;
+
+        musicSource.DOPitch( normalized, 0.1f);
+
+    }
     public void StopMusic()
     {
         musicSource.DOFade(0, 1);
-    }
-
-    void Update()
-    {
-        if(trackData)
-        {
-            currentUpdateTime += Time.deltaTime;
-
-            if (currentUpdateTime >= updateStep)
-            {
-                currentUpdateTime = 0f;
-                musicSource.clip.GetData(clipSampleData, musicSource.timeSamples); //I read 1024 samples, w$$anonymous$$ch is about 80 ms on a 44khz stereo clip, beginning at the current sample position of the clip.
-                clipLoudness = 0f;
-
-                foreach (var sample in clipSampleData)
-                {
-                    clipLoudness += Mathf.Abs(sample);
-                }
-                clipLoudness /= sampleDataLength; //clipLoudness is what you are looking for
-            }
-
-            //Debug.LogError("clip loud: " + clipLoudness.ToString());
-
-            if (clipLoudness > 0.22f)
-            {
-
-                //Debug.LogError("clip loud: " + clipLoudness.ToString());
-                if(lastPrintedIndex != SpawnManager.instance.currentFrameIndex)
-                    //Debug.LogError("index: " + (SpawnManager.instance.currentFrameIndex - 3).ToString());
-
-                lastPrintedIndex = SpawnManager.instance.currentFrameIndex;
-
-            }
-
-
-            lastLoud = clipLoudness;
-
-        }
-
-
     }
 
 }

@@ -108,8 +108,10 @@ public class GameManager : MonoBehaviour
 
     public void AdjustFever(float _fever)
     {
+        
         feverMeter += _fever;
         feverMeter = Mathf.Clamp(feverMeter, 0, 1);
+        AudioManager.instance.AdjustPitch(feverMeter);
         UIManager.instance.UpdateFeverMeter(feverMeter);
 
         if(feverMeter <= 0)
@@ -127,8 +129,9 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        SetFever(0.5f);
+        SetFever(1f);
         currentLevel = 0;
+        
         UIManager.instance.FadeTitle();
         SpawnManager.instance.StartLevel(currentLevel);
 
@@ -147,15 +150,19 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (!SpawnManager.instance.spawnEnemies) return;
+
         UIManager.instance.GameOver();
         SpawnManager.instance.StopLevel();
         AudioManager.instance.StopMusic();
+        AudioManager.instance.PlayOneShot(AudioManager.instance.GameOverSounds[UnityEngine.Random.Range(0, AudioManager.instance.GameOverSounds.Length)]);
+        AudioManager.instance.GameOverMusic();
 
     }
 
     public void NextLevel()
     {
-        SetFever(0.5f);
+        SetFever(1f);
 
         currentLevel++;
         currentStreak = 0;
@@ -170,7 +177,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        SetFever(0.5f);
+        SetFever(1f);
 
         SpawnManager.instance.locationIndex = 0;
 
@@ -196,7 +203,7 @@ public class GameManager : MonoBehaviour
 
     public void WonGameRestart()
     {
-        SetFever(0.5f);
+        SetFever(1f);
 
         UIManager.instance.WonGameFade();
         currentLevel = 0;

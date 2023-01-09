@@ -63,12 +63,12 @@ public class UIManager : MonoBehaviour
 
     public void UpdatePoints(int _points)
     {
-        points.text = _points.ToString();
+        points.text = "Score: " + _points.ToString();
     }
 
     public void UpdateCombo(int _combo)
     {
-        combo.text = _combo.ToString();
+        combo.text = "Combo: " + _combo.ToString();
         if(_combo == 0)
         {
             combo.color = Color.white;

@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50298e504f828764a90c679702db8792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   spawnSound: {fileID: 0}
   deathSound: {fileID: 0}
   aliveTimer: 0
